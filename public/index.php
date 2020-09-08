@@ -1,8 +1,9 @@
 <?php 
 
 define("APP_BASE_PATH", __DIR__);
+$config = parse_ini_file("../config.ini");
 
-require_once("vendor/autoload.php");
+require_once("../vendor/autoload.php");
 
 use App\DB\DB; 
 
@@ -10,11 +11,11 @@ use App\DB\DB;
  * Initiating DB connection and DB object
  */
 $dbParams = [
-    "serverName" => "localhost",
-    "userName" => "root",
-    "password" => "",
-    "dbName" => "php_crud_db"
-]; 
+    "serverName" => $config['serverName'],
+    "userName" => $config['userName'],
+    "password" => $config['password'],
+    "dbName" => $config['dbName']
+];
 $db = new DB($dbParams);
 
 
@@ -48,7 +49,7 @@ $response = $db->executeQuery("get", "users", $getParams);
      "setClause" => ["name", "email"], //which columns to update
      "whereClause" => "WHERE `id` = :id",
      "whereClauseParams" => [
-         "id" => 18,
+         "id" => 31,
          "name" => "Updated John",
          "email" => "updated@john.com"
      ] 
@@ -63,7 +64,7 @@ $response = $db->executeQuery("get", "users", $getParams);
  $deleteParams = [
      "whereClause" => "WHERE `id` = :id",
      "whereClauseParams" => [
-         "id" => 19
+         "id" => 31
      ]
  ];
 

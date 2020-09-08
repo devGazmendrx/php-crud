@@ -8,6 +8,7 @@ use App\DBHelper\DBHelper;
 class DB{
 
     private $db;
+    private static $instance = null;
 
     public function __construct(array $dbParams){
 
@@ -18,9 +19,12 @@ class DB{
 
         try{
 
-            $this->db = new PDO("mysql:host=$serverName;dbname=$dbName", $userName, $password);
-            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            if(!self::$instance){
+                self::$instance = new PDO("mysql:host=$serverName;dbname=$dbName", $userName, $password);
+                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$instance->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            }
+            $this->db = self::$instance;
 
         }catch(\PDOException $e){
 
@@ -50,4 +54,5 @@ class DB{
         }
 
     }
+
 }
